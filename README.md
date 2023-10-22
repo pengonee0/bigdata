@@ -262,3 +262,81 @@ python 프로그램 맨 위에 pandas 사용 선언해준다.
   '수강학년'의 값으로 그룹화, 각 '시간수' 값의 평균 계산
 
   평균: mean(), 표준편차: std(), 합: sum() 등 함수 사용 가능
+
+## 7주차 복습
+
+- .csv 파일을 'dataset' 데이터프레임으로 불러오기
+
+    ```
+    import pandas as pd
+    
+    dataset=pd.read_csv('DATA.csv')
+    ```
+
+- 행렬 정보 확인
+
+    ```
+    dataset.shape
+    ```
+    
+- 열 이름 확인
+
+    ```
+    dataset.columns
+    ```
+    
+- 값 문자형 확인
+
+    ```
+    dataset.info()
+    ```
+    
+- 기술 통계
+
+    ```
+    dataset.describe()
+    ```
+
+- 상위/하위 10개 항목
+
+    ```
+    dataset.head(10)
+    dataset.tail(10)
+    ```
+
+- '고객명', '나이' '성별' 선택한 열만 출력
+
+    ```
+    dataset[['고객명','나이','성별']].head(10)
+    ```
+
+- '고객명', '나이' 순서대로 절렬, '고객명', '나이' '성별' 선택한 열만 출력
+
+    ```
+    dataset.sort_values(by=['고객명','나이'], ascending=[1,0])[['고객명','나이','성별']].head(10)
+    ```
+
+- '키'가 165 이상, '몸무게'가 60 초과인 행만 출력
+
+    ```
+    dataset[(dataset['키']>=165)&(dataset['몸무게']>60)]
+    ```
+    
+- '김' 문자를 포함하는 행만 출력
+
+    ```
+    dataset[dataset['고객명'].str.contains('김')]
+    ```
+
+- ('나이'//10)*10의 값을 갖는 '연령대' 행 생성
+
+    ```
+    dataset['연령대']=(dataset['나이']//10)*10
+    ```
+
+- '연령대', '주사용OTT' 행 개수별로 정렬,
+
+    ```
+    dataset.groupby(by=['연령대', '주사용OTT'],as_index=False).size().sort_values(by=['size'])
+    ```
+
