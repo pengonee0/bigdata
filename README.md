@@ -340,3 +340,54 @@ python 프로그램 맨 위에 pandas 사용 선언해준다.
     dataset.groupby(by=['연령대', '주사용OTT'],as_index=False).size().sort_values(by=['size'])
     ```
 
+
+## 12주차: SQL 기초
+
+MySQL Workbench 프로그램 실행
+
+![제목 없음](https://github.com/pengonee0/bigdata/assets/147499525/b5891a83-1b32-441c-80db-60d787410f1d)
+
+
+- Connection 생성
+
+  
+    ![제목 없음](https://github.com/pengonee0/bigdata/assets/147499525/b21cfffd-736d-4bf6-90b9-6d501c5301f6)
+
+    -항목명- 안에 올바른 정보들을 입력하여 DB에 접근할 수 있다.
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/37f1e682-b34b-4dd4-8c36-5e7351c3968b)
+
+    connection이 생성되면 위와 같은 항목이 생긴다. 클릭하여 DB에 접근한다.
+
+    연결 시 Password를 요구할 경우, 올바른 Password를 입력해준다.
+
+
+- DB 열람
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/b147262a-c734-4785-98af-f5de0cfa0f74)
+
+    다음과 같은 창으로 접속되었다. Navigator - Schemas 를 클릭하여 항목들을 확인한다.
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/27877a9d-1b52-4efe-87f1-08e6e52b040d)
+
+    위 db 테이블 중 cust_sales 를 열람
+
+    ```
+    SELECT * FROM bigdb.cust_sales;
+    ```
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/0be39482-d3d2-4924-96f3-05dff39ae33c)
+
+    Result Grid에서 결과를 확인할 수 있다.
+
+    조건을 설정하여 DB 열람
+
+    ```
+    select cust_id, cust_nm, sales_dt, goods_nm, age, sex from cust_sales where cust_id='3806'
+    ```
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/7ead4c84-70e9-4739-9ef6-e92e6367bebf)
+
+    select (1) from (2) where (3)
+  
+    : (2)에서, (3)을, (1)에 설정한 열만 출력
