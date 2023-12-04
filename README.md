@@ -391,3 +391,94 @@ MySQL Workbench 프로그램 실행
     select (1) from (2) where (3)
   
     : (2)에서, (3)을, (1)에 설정한 열만 출력
+
+  
+## 13주차: SQL 기초
+
+
+- DB 열람
+
+    총 고객 수, 매출액 확인
+
+    ```
+    select count(cust_id),
+           count(distinct cust_id),    	#cust_id 중복 제외(distinct): 총 고객 수
+    	   sum(sales_qty*goods_price)	#총 매출액
+     from cust_sales;
+    ```
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/664e66af-0c9a-453e-84f3-8901d48cbd49)
+
+    count(cust_id): 모든 cust_id 개수 출력
+
+    count(distinct cust_id): 중복을 제외한 cust_id 개수 출력
+
+    sum(sales_qty*goods_price): 판매 개수\*금액, 매출액
+
+    고객별 방문일수, 최초구매일, 최근구매일, 거래기간 확인
+
+     ```
+    select 
+    		count(distinct sales_dt) as sales_cnt,	#구매 건수
+    		cust_id, cust_nm, sex,
+    		min(str_to_date(sales_dt, '%Y%m%d')) as first_purchase,	#최초 구매일
+    		max(str_to_date(sales_dt, '%Y%m%d')) as last_purchase,	#최근 구매일
+    		datediff(max(str_to_date(sales_dt, '%Y%m%d')),min(str_to_date(sales_dt, '%Y%m%d'))) as period
+     from cust_sales
+     group by cust_id, cust_nm, sex	#select의 열 선택과 맞추어 주어야 한다.
+     order by count(distinct sales_dt) desc;
+    ```
+
+     ![image](https://github.com/pengonee0/bigdata/assets/147499525/89a13e96-1224-4da1-96cb-35c618a5ee7b)
+
+    as: 열 이름 설정
+  
+    str_to_date(설정할 열 이름, 형식): 문자열 형태로 저장된 데이터를 날짜 형태로 변환
+
+    datediff(날짜1, 날짜2): 날짜1-날짜2=(사이 기간(일)) 출력
+
+    group by: 설정 열 기준 묶음
+
+    order by: 정렬 설정, 기본 오름차순(asc) desc 설정시 내림차순
+
+- python에서 DB 열
+
+     ```
+    !pip install pymysql
+    
+    import pandas as pd
+    import pymysql  # MySQL을 사용하는 경우, pymysql 라이브러리를 설치해야 합니다.
+    ```
+
+    sql DB 열람을 위해 pymysql 설치, pandas와 pymysql import
+  
+     ```
+     connection = pymysql.connect(
+              host='-주소-',
+              user='-username-',
+              password='-password-',
+              database='-DB-'
+    )
+    ```
+
+    -항목명- 안에 올바른 정보들을 입력하여 python에서 DB Server에 접근할 수 있다.
+
+    ```
+    query = "select cust_id, cust_nm, sex,\
+                    count(distinct sales_dt) as sales_cnt,\
+                    min(str_to_date(sales_dt, '%Y%m%d')) as first_purchase,\
+                    max(str_to_date(sales_dt, '%Y%m%d')) as last_purchase,\
+                    datediff(max(str_to_date(sales_dt, '%Y%m%d')),min(str_to_date(sales_dt, '%Y%m%d'))) as period\
+              from cust_sales\
+              group by cust_id, cust_nm, sex\
+              order by count(distinct sales_dt) desc;"
+    
+    pd.read_sql_query(query, connection)
+    ```
+
+    query에 SQL Workbench에서 사용하던 명령들을 저장한다.
+  
+    pd.read_sql_query(query, connection)으로 불러온 DB를 확인할 수 있다.
+
+    ![image](https://github.com/pengonee0/bigdata/assets/147499525/1de81378-5ad7-46aa-86af-fe4b3de8ecf2)
+
